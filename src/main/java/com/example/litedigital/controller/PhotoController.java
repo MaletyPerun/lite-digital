@@ -1,6 +1,7 @@
 package com.example.litedigital.controller;
 
-import com.example.litedigital.service.FileService;
+import com.example.litedigital.dto.PhotoDto;
+import com.example.litedigital.service.PhotoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,19 +14,19 @@ import java.util.List;
 @RestController
 @RequestMapping("/photo")
 @RequiredArgsConstructor
-public class FileController {
+public class PhotoController {
 
-    private final FileService service;
+    private final PhotoService service;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<String> getFiles() {
+    public List<PhotoDto> getFiles() {
         return service.getFiles();
     }
 
     @GetMapping("/test")
     @ResponseStatus(HttpStatus.OK)
     public List<String> testConnection() {
-        return null;
+        return service.test();
     }
 }

@@ -3,3 +3,5 @@ project:
   port: 21
   login: epiz_33891104
   password: CLc195rPV8h3cv
+  dir-name: фотографии
+  prefix-file: GRP327_
