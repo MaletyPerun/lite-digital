@@ -2,7 +2,6 @@ package com.example.litedigital.controller;
 
 import com.example.litedigital.service.FileService;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.net.ftp.FTPFile;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +26,6 @@ public class FileController {
     @GetMapping("/test")
     @ResponseStatus(HttpStatus.OK)
     public List<String> testConnection() {
-        return service.test();
+        return null;
     }
 }
