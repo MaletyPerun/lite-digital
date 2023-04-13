@@ -14,7 +14,7 @@ public class PhotoUtil {
         List<PhotoDto> targetsDto = new ArrayList<>();
         for (ProjectFile target : targets) {
             targetsDto.add(PhotoDto.builder()
-                    .fullPath(target.getPath() + target.getFile().getName())
+                    .fullPath(target.getPath() + "/" + target.getFile().getName())
                     .created(target.getFile().getTimestampInstant())
                     .memory(target.getFile().getSize())
                     .build());

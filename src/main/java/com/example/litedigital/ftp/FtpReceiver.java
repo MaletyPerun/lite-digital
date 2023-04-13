@@ -31,6 +31,7 @@ public class FtpReceiver {
             client.setControlEncoding("UTF-8");
         } catch (IOException e) {
             log.error("failed connection or login");
+            throw new BadConnection("failed connection or login");
         }
     }
 
@@ -40,6 +41,7 @@ public class FtpReceiver {
             client.disconnect();
         } catch (IOException e) {
             log.error("failed disconnection");
+            throw new BadDisconnection("failed disconnection");
         }
     }
 
@@ -49,16 +51,15 @@ public class FtpReceiver {
         try {
             files = client.listFiles(path);
         } catch (IOException e) {
-            log.error("failed connection");
+            log.error("failed connection: can`t read directories");
+            throw new BadConnection("failed connection: can`t read directories");
         }
         for (FTPFile file : files) {
             if (file.isDirectory() && file.getName().equals(dirName)) {
-//                List<ProjectFile> subFiles = getTarget(path + "/" + file.getName(), prefixFile);
                 List<ProjectFile> subFiles = getTarget(file.getName(), prefixFile);
                 fileList.addAll(subFiles);
             } else if (file.isDirectory() && !file.getName().equals(".") && !file.getName().equals("..")) {
-//                List<ProjectFile> subFiles = getFiles(path + "/" + file.getName(), dirName, prefixFile);
-
+                log.info("found directory {}", file.getName());
                 String pathParent = !path.equals("") ? path + "/" + file.getName() : file.getName();
                 List<ProjectFile> subFiles = getFiles(pathParent, dirName, prefixFile);
                 fileList.addAll(subFiles);
@@ -74,11 +75,12 @@ public class FtpReceiver {
         try {
             files = client.mlistDir(path, filter);
         } catch (IOException e) {
-            log.error("bad connection");
+            log.error("bad connection: can`t read files");
+            throw new BadConnection("bad connection: can`t read files");
         }
         for (FTPFile file : files) {
             if (file.isFile() && file.getName().startsWith(prefixFile)) {
-
+                log.info("add {}", file.getName());
                 fileList.add(new ProjectFile(file, path));
             }
         }
@@ -86,16 +88,14 @@ public class FtpReceiver {
     }
 
     public List<String> test() {
-//        FTPClient client = new FTPClient();
         FTPFile[] files = new FTPFile[0];
         try {
-            files = client.listFiles("htdocs/ftp");
+            files = client.listFiles("htdocs/ftp/Фотозона 1");
         } catch (IOException e) {
             log.error("fail test");
+            throw new BadConnection("fail test");
         }
-        List<FTPFile> directories = new ArrayList<>();
         List<String> dirNames = new ArrayList<>();
-
         for (FTPFile dir : files) {
             dirNames.add(dir.getName());
         }
