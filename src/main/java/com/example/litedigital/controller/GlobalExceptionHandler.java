@@ -21,15 +21,15 @@ public class GlobalExceptionHandler {
     private final ErrorAttributes errorAttributes;
 
     @ExceptionHandler(BadConnection.class)
-    @ResponseStatus(HttpStatus.I_AM_A_TEAPOT)
+    @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
     protected ResponseEntity<Object> handleConflict(WebRequest request, BadConnection e) {
-        return createResponseEntity(request, e.getOptions(), e.getMessage(), HttpStatus.I_AM_A_TEAPOT);
+        return createResponseEntity(request, e.getOptions(), e.getMessage(), HttpStatus.SERVICE_UNAVAILABLE);
     }
 
     @ExceptionHandler(BadDisconnection.class)
-    @ResponseStatus(HttpStatus.I_AM_A_TEAPOT)
+    @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
     protected ResponseEntity<Object> handleConflict(WebRequest request, BadDisconnection e) {
-        return createResponseEntity(request, e.getOptions(), e.getMessage(), HttpStatus.I_AM_A_TEAPOT);
+        return createResponseEntity(request, e.getOptions(), e.getMessage(), HttpStatus.SERVICE_UNAVAILABLE);
     }
 
     @SuppressWarnings("unchecked")

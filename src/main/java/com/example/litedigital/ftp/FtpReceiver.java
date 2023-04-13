@@ -23,7 +23,7 @@ public class FtpReceiver {
     @PostConstruct
     private void init() {
         client = new FTPClient();
-        client.setControlEncoding("UTF-8");
+        client.setAutodetectUTF8(true);
         log.info("encoding {}", client.getControlEncoding());
         try {
             client.connect(projectProperties.getHost(), projectProperties.getPort());
@@ -31,14 +31,14 @@ public class FtpReceiver {
             int replyCode = client.getReplyCode();
             if (!FTPReply.isPositiveCompletion(replyCode)) {
                 client.disconnect();
-                System.out.println("Connect failed");
-                return;
+                log.error("connection failed");
+                throw new BadConnection("connection failed");
             }
             boolean success = client.login(projectProperties.getLogin(), projectProperties.getPassword());
             showServerReply(client);
             if (!success) {
-                System.out.println("Could not login to the server");
-                return;
+                log.error("could not login to the server");
+                throw new BadConnection("could not login to the server");
             }
             client.setFileType(FTP.BINARY_FILE_TYPE);
         } catch (IOException e) {
@@ -94,7 +94,7 @@ public class FtpReceiver {
     }
 
     private List<ProjectFile> getTarget(String path, String prefixFile) {
-        FTPFileFilter filter = file -> file.isFile() && file.getName().startsWith(prefixFile);
+        FTPFileFilter filterByPrefix = file -> file.isFile() && file.getName().startsWith(prefixFile);
         List<ProjectFile> fileList = new ArrayList<>();
         try {
             client.changeWorkingDirectory(path);
@@ -104,7 +104,7 @@ public class FtpReceiver {
         }
         FTPFile[] files;
         try {
-            files = client.mlistDir(path, filter);
+            files = client.mlistDir(path, filterByPrefix);
         } catch (IOException e) {
             log.error("bad connection: can`t read files");
             throw new BadConnection("bad connection: can`t read files");
