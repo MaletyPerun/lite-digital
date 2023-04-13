@@ -15,6 +15,8 @@
     <description>lite-digital</description>
     <properties>
         <java.version>17</java.version>
+<!--        https://www.techiedelight.com/ru/specify-main-class-in-spring-boot/-->
+        <start-class>com.example.lite-digital.LiteDigitalApplication</start-class>
     </properties>
     <dependencies>
         <dependency>

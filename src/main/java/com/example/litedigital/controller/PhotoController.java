@@ -23,10 +23,4 @@ public class PhotoController {
     public List<PhotoDto> getFiles() {
         return service.getFiles();
     }
-
-    @GetMapping("/test")
-    @ResponseStatus(HttpStatus.OK)
-    public List<String> testConnection() {
-        return service.test();
-    }
 }

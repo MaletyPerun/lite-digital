@@ -22,7 +22,4 @@ public class PhotoService {
         List<ProjectFile> targets = ftp.getFiles("", properties.getDirName(), properties.getPrefixFile());
         return PhotoUtil.modelToDto(targets);
     }
-    public List<String> test() {
-        return ftp.test();
-    }
 }
